@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "jquery@3.5.1",
+      "destination": "BanHangMVC/wwwroot/lib/jquery"
+    },
+    {
+      "library": "jqueryui@1.14.1",
+      "destination": "BanHangMVC/wwwroot/lib/jqueryui"
+    },
+    {
+      "library": "elfinder@2.1.65",
+      "destination": "BanHangMVC/wwwroot/lib/elfinder"
+    },
+    {
+      "library": "summernote@0.9.1",
+      "destination": "BanHangMVC/wwwroot/lib/summernote"
+    }
+  ]
+}
