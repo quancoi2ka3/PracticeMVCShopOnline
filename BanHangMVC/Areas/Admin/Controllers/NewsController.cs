@@ -194,6 +194,23 @@ namespace BanHangMVC.Areas.Admin.Controllers
 
             return Json(new { success = false });
         }
-
+        public ActionResult DeleteAll(string ids)
+        {
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var items = ids.Split(',');
+                if (items != null && items.Any())
+                {
+                    foreach (var item in items)
+                    {
+                        var obj = _db.New.Find(Convert.ToInt32(item));
+                        _db.New.Remove(obj);
+                        _db.SaveChanges();
+                    }
+                }
+                return Json(new { success = true, message = "Xóa thành công" });
+            }
+            return Json(new { success = false });
+        }
     }
 }
