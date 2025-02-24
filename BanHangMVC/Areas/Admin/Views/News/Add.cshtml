@@ -84,6 +84,10 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="SeoTitle">Hiển thị</label>
+                            @Html.CheckBoxFor(x => x.IsActive,new{@checked = "@checked"})
+                        </div>
+                        <div class="form-group">
                             <label for="SeoTitle">Seo Title</label>
                             @Html.TextAreaFor(x => x.SeoTitle, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
                         </div>

@@ -20,6 +20,7 @@ namespace BanHangMVC.Models.EF
         public string SeoTitle { get; set; }
         public string SeoDescription { get; set; }
         public string SeoKeyword { get; set; }
+        public bool IsActive { get; set; }
         public virtual Category Category { get; set; }
     }
 }

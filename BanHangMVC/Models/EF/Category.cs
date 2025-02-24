@@ -27,6 +27,7 @@ namespace BanHangMVC.Models.EF
         public string? SeoDescription { get; set; }
         [StringLength(150)]
         public string? SeoKeyword { get; set; }
+        public bool IsActive { get; set; }
         public int Position { get; set; } = 1;
         public ICollection<New> News { get; set; }
         public ICollection<Post> Posts { get; set; }

@@ -93,18 +93,18 @@ namespace BanHangMVC.Areas.Admin.Controllers
                     model.ModifiedDate = DateTime.Now;
                     model.Alias = BanHangMVC.Models.Common.Filter.FilterChar(model.Title);
                     //_db.Entry(model).State = EntityState.Modified;
-                    _db.Entry(model).Property(x => x.Title).IsModified = true;
-                    _db.Entry(model).Property(x => x.Description).IsModified = true;
-                    _db.Entry(model).Property(x => x.Alias).IsModified = true;
-                    _db.Entry(model).Property(x => x.SeoDescription).IsModified = true;
-                    _db.Entry(model).Property(x => x.SeoTitle).IsModified = true;
-                    _db.Entry(model).Property(x => x.SeoKeyword).IsModified = true;
-                    _db.Entry(model).Property(x => x.Position).IsModified = true;
-                    _db.Entry(model).Property(x => x.ModifiedBy).IsModified = true;
-                    _db.Entry(model).Property(x => x.CreatedBy).IsModified = true;
-                    _db.Entry(model).Property(x => x.ModifiedDate).IsModified = true;
-                    _db.Entry(model).Property(x => x.CreatedDate).IsModified = true;
-
+                    //_db.Entry(model).Property(x => x.Title).IsModified = true;
+                    //_db.Entry(model).Property(x => x.Description).IsModified = true;
+                    //_db.Entry(model).Property(x => x.Alias).IsModified = true;
+                    //_db.Entry(model).Property(x => x.SeoDescription).IsModified = true;
+                    //_db.Entry(model).Property(x => x.SeoTitle).IsModified = true;
+                    //_db.Entry(model).Property(x => x.SeoKeyword).IsModified = true;
+                    //_db.Entry(model).Property(x => x.Position).IsModified = true;
+                    //_db.Entry(model).Property(x => x.ModifiedBy).IsModified = true;
+                    //_db.Entry(model).Property(x => x.CreatedBy).IsModified = true;
+                    //_db.Entry(model).Property(x => x.ModifiedDate).IsModified = true;
+                    //_db.Entry(model).Property(x => x.CreatedDate).IsModified = true;
+                    _db.Entry(model).State = EntityState.Modified;
                     int rowsAffected = _db.SaveChanges(); // Lưu dữ liệu vào DB
 
                     if (rowsAffected > 0)
