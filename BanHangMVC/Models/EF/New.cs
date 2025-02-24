@@ -19,9 +19,9 @@ namespace BanHangMVC.Models.EF
         public string Detail { get; set; }
         public string Image { get; set; }
         public int CategoryID { get; set; }
-        public string SeoTitle { get; set; }
-        public string SeoDescription { get; set; }
-        public string SeoKeyword { get; set; }
+        public string? SeoTitle { get; set; }
+        public string? SeoDescription { get; set; }
+        public string? SeoKeyword { get; set; }
         public virtual Category? Category { get; set; }
     }
 }
