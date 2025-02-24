@@ -8,18 +8,22 @@
 
   <ItemGroup>
     <Compile Remove="Content\ckeditor\**" />
+    <Compile Remove="wwwroot\ckfinder\**" />
     <Compile Remove="wwwroot\Content\ckfinder\**" />
     <Compile Remove="wwwroot\Content\Content\**" />
     <Compile Remove="wwwroot\Content\uploads\**" />
     <Content Remove="Content\ckeditor\**" />
+    <Content Remove="wwwroot\ckfinder\**" />
     <Content Remove="wwwroot\Content\ckfinder\**" />
     <Content Remove="wwwroot\Content\Content\**" />
     <Content Remove="wwwroot\Content\uploads\**" />
     <EmbeddedResource Remove="Content\ckeditor\**" />
+    <EmbeddedResource Remove="wwwroot\ckfinder\**" />
     <EmbeddedResource Remove="wwwroot\Content\ckfinder\**" />
     <EmbeddedResource Remove="wwwroot\Content\Content\**" />
     <EmbeddedResource Remove="wwwroot\Content\uploads\**" />
     <None Remove="Content\ckeditor\**" />
+    <None Remove="wwwroot\ckfinder\**" />
     <None Remove="wwwroot\Content\ckfinder\**" />
     <None Remove="wwwroot\Content\Content\**" />
     <None Remove="wwwroot\Content\uploads\**" />
@@ -2060,21 +2064,10 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Uploads\" />
-    <Folder Include="wwwroot\ckfinder\App_Data\" />
-    <Folder Include="wwwroot\ckfinder\src\CKFinder.Connector.WebApp\userfiles\" />
-    <Folder Include="wwwroot\ckfinder\userfiles\" />
     <Folder Include="wwwroot\files\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\ckfinder\src\CKFinder.Connector.Plugin.DiskQuota\CKFinder.Connector.Plugin.DiskQuota.csproj" />
-    <None Include="wwwroot\ckfinder\src\CKFinder.Connector.Plugin.GetFileInfo\CKFinder.Connector.Plugin.GetFileInfo.csproj" />
-    <None Include="wwwroot\ckfinder\src\CKFinder.Connector.Plugin.UserActionsLogger\CKFinder.Connector.Plugin.UserActionsLogger.csproj" />
-    <None Include="wwwroot\ckfinder\src\CKFinder.Connector.Plugin.Watermark\CKFinder.Connector.Plugin.Watermark.csproj" />
-    <None Include="wwwroot\ckfinder\src\CKFinder.Connector.Samples.sln" />
-    <None Include="wwwroot\ckfinder\src\CKFinder.Connector.WebApp\CKFinder.Connector.WebApp.csproj" />
-    <None Include="wwwroot\ckfinder\src\CKFinder.Connector.WebApp\CKFinder.Connector.WebApp.csproj.user" />
-    <None Include="wwwroot\ckfinder\src\CKFinder.Connector.WebApp\Properties\PublishProfiles\FolderProfile.pubxml.user" />
     <None Include="wwwroot\Content\Clients\build\config\postcss.config.js" />
     <None Include="wwwroot\Content\Clients\build\config\rollup.config.js" />
     <None Include="wwwroot\Content\Clients\build\js\AdminLTE.js" />
