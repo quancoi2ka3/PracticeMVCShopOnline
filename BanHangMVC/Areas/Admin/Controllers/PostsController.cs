@@ -15,15 +15,29 @@ namespace BanHangMVC.Areas.Admin.Controllers
             _db = db;
         }
         // GET: NewsController
-        public ActionResult Index(int? page)
+        public ActionResult Index(string search, int? page)
         {
-            int pageSize = 10;
-            int pageIndex = page ?? 1;
-            if (page == null)
+            int pageSize = 5;
+            int pageIndex = page.GetValueOrDefault(1); // Đảm bảo page không null
+            search = search?.Trim(); // Loại bỏ khoảng trắng thừa
+
+            // Truy vấn dữ liệu từ cơ sở dữ liệu
+            IQueryable<Post> query = _db.Posts.OrderByDescending(x => x.ID);
+
+            // Lọc theo từ khóa tìm kiếm (nếu có)
+            if (!string.IsNullOrWhiteSpace(search))
             {
-                page = 1;
+                query = query.Where(x => x.Alias.Contains(search) || x.Title.Contains(search));
             }
-            var items = _db.Posts.OrderByDescending(x => x.ID).ToPagedList(pageIndex, pageSize);
+
+            // Phân trang
+            var items = query.ToPagedList(pageIndex, pageSize);
+
+            // Truyền dữ liệu sang View
+            ViewBag.PageSize = pageSize;
+            ViewBag.Page = pageIndex;
+            ViewBag.Search = search; // Giữ lại giá trị tìm kiếm
+
             return View(items);
         }
         // GET: NewsController/Details/5

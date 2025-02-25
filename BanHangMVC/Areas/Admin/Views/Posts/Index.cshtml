@@ -52,6 +52,19 @@
             </div>
         </div>
         <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    @using (Html.BeginForm("index", "Posts", FormMethod.Get, new { }))
+                    {
+                        <div class="input-group input-group-sm">
+                            @Html.TextBox("search", ViewBag.Search as string, new { @class = "form-control", @placeholder = "Nhập nội dung tìm kiếm" })
+                            <span class="input-group-append">
+                                <button type="submit" class="btn btn-info btn-flat">Tìm kiếm</button>
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -67,7 +80,7 @@
                 <tbody>
                     @if (Model != null && Model.Any())
                     {
-                        var i = 1;
+                        var i = ((ViewBag.Page - 1) * (ViewBag.PageSize)) + 1;
                         foreach (var item in Model)
                         {
                             var strCheck = item.IsActive ? "<i class = 'fa fa-check text-success'></i>" : "<i class = 'fas fa-times text-danger'></i>";
