@@ -1,97 +1,236 @@
 ﻿@model BanHangMVC.Models.EF.Post
-
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+@section naviheader {
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/home" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/category" class="nav-link">Bài viết</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Cập nhật</a>
+        </li>
+    </ul>
+}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thêm mới tin tức</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Bài viết</a></li>
+                    <li class="breadcrumb-item active">Cập nhật</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
 
-<h4>Post</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ID" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Alias" class="control-label"></label>
-                <input asp-for="Alias" class="form-control" />
-                <span asp-validation-for="Alias" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Detail" class="control-label"></label>
-                <input asp-for="Detail" class="form-control" />
-                <span asp-validation-for="Detail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoryID" class="control-label"></label>
-                <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryID"></select>
-                <span asp-validation-for="CategoryID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SeoTitle" class="control-label"></label>
-                <input asp-for="SeoTitle" class="form-control" />
-                <span asp-validation-for="SeoTitle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SeoDescription" class="control-label"></label>
-                <input asp-for="SeoDescription" class="form-control" />
-                <span asp-validation-for="SeoDescription" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SeoKeyword" class="control-label"></label>
-                <input asp-for="SeoKeyword" class="form-control" />
-                <span asp-validation-for="SeoKeyword" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedBy" class="control-label"></label>
-                <input asp-for="CreatedBy" class="form-control" />
-                <span asp-validation-for="CreatedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedDate" class="control-label"></label>
-                <input asp-for="CreatedDate" class="form-control" />
-                <span asp-validation-for="CreatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ModifiedDate" class="control-label"></label>
-                <input asp-for="ModifiedDate" class="form-control" />
-                <span asp-validation-for="ModifiedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ModifiedBy" class="control-label"></label>
-                <input asp-for="ModifiedBy" class="form-control" />
-                <span asp-validation-for="ModifiedBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Thông tin bài viết</h3>
+        </div>
+        <div class="card-body">
+            @if (Model != null)
+            {
+                <div class="bs-stepper-content">
+                    @using (Html.BeginForm("Edit", "Posts", new { area = "Admin" }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+                        @Html.HiddenFor(x => x.ID)
+                        @Html.HiddenFor(x => x.CategoryID)
+                        <!-- your steps content here -->
+                        <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                            <div class="form-group">
+                                <label for="Title">Tiêu đề</label>
+                                @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Nhập tên danh mục" })
+                                @Html.ValidationMessageFor(x => x.Title, "", new { @class = "text-danger" })
+
+                            </div>
+                            <div class="form-group">
+                                <label for="Description">Mô tả</label>
+                                @Html.TextAreaFor(x => x.Description, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
+                            </div>
+                            <div class="form-group">
+                                <label for="Description">Chi tiết</label>
+                                @Html.TextAreaFor(x => x.Detail, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có", @id = "txtDetail" })
+                            </div>
+                            <div class="form-group">
+                                <label for="Position">Hình ảnh</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        @Html.TextBoxFor(x => x.Image, new { @id = "txtImage", @class = "form-control", @placeholder = "Ảnh" })
+                                    </div>
+                                    <div class="input-group-append">
+                                        <input type="button" value="Tải ảnh" onclick="BrowseServer('txtImage');" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="SeoTitle">Hiển thị</label>
+                                @Html.CheckBoxFor(x => x.IsActive)
+                            </div>
+                            <div class="form-group">
+                                <label for="SeoTitle">Seo Title</label>
+                                @Html.TextAreaFor(x => x.SeoTitle, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
+                            </div>
+                            <div class="form-group">
+                                <label for="SeoDescription">Seo Description</label>
+                                @Html.TextAreaFor(x => x.SeoDescription, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
+                            </div>
+                            <div class="form-group">
+                                <label for="SeoKeyword">Seo Keyword</label>
+                                @Html.TextAreaFor(x => x.SeoKeyword, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
+                            </div>
+                            <div class="form-group">
+                                <label for="CreatedBy">Created By</label>
+                                @Html.TextAreaFor(x => x.CreatedBy, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
+                            </div>
+                            <div class="form-group">
+                                <label for="ModifiedBy">Modified By</label>
+                                @Html.TextAreaFor(x => x.ModifiedBy, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
+                            </div>
+                            <div class="form-group">
+                                <a href="/admin/posts" class="btn btn-danger">Quay lại</a>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        </div>
+        <!-- /.card-footer-->
     </div>
-</div>
+    <!-- /.card -->
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</section>
+<!-- /.content -->
+@section scripts {
+
+
+    <script>
+                (function (factory) {
+                    if (typeof define === 'function' && define.amd) {
+                        define(['jquery'], factory);
+                    }
+                    else if (typeof module === 'object' && module.exports) {
+                        module.exports = factory(require('jquery'));
+                    } else {
+                        factory(window.jQuery);
+                    }
+                }(function ($) {
+                  $.extend($.summernote.plugins, {
+                        // Tạo plugin tên elfinder
+                        'elfinder': function (context) {
+                            var self = this;
+                            // ui has renders to build ui elements.
+                            var ui = $.summernote.ui;
+                            // Tạo nút bấm
+                            context.memo('button.elfinder', function () {
+                                var button = ui.button({
+                                    contents: '<i class="note-icon-picture"/> elFinder',
+                                    tooltip: 'Quản lý file',
+                                    click: function () {
+                                        // Bấm vào nút bấm gọi hàm elfinderDialog
+                                        elfinderDialog(context);
+                                    }
+                                });
+                                // create jQuery object from button instance.
+                                var $elfinder = button.render();
+                                return $elfinder;
+                            });
+                            // This methods will be called when editor is destroyed by $('..').summernote('destroy');
+                            // You should remove elements on `initialize`.
+                            this.destroy = function () {
+                                this.$panel.remove();
+                                this.$panel = null;
+                            };
+                        }
+
+                    });
+                }));
+                function elfinderDialog(editor) {
+                        var fm = $('<div/>').dialogelfinder({
+                        url : "/el-finder-file-system/connector",
+                        baseUrl: "@Url.Content("~/lib/elfinder")",
+                        lang : 'vi',
+                        width : 840,
+                        height: 450,
+                        destroyOnClose : true,
+                        getFileCallback : function(files, fm) {
+                            console.log(files);
+                                        editor.invoke('editor.insertImage', files.url);
+                        },
+                        commandsOptions : {
+                            getfile : {
+                                oncomplete : 'close',
+                                folders : false
+                            }
+                        }
+                    }).dialogelfinder('instance');
+                }
+                function BrowseServer(inputId) {
+            $('<div/>').dialogelfinder({
+                url: "/el-finder-file-system/connector", // Đường dẫn tới server xử lý file
+                baseUrl: "@Url.Content("~/lib/elfinder")",
+                lang: 'vi',
+                width: 840,
+                height: 450,
+                destroyOnClose: true,
+                getFileCallback: function (file, fm) {
+                    $('#' + inputId).val(file.url); // Gán đường dẫn ảnh vào ô nhập liệu
+                },
+                commandsOptions: {
+                    getfile: {
+                        oncomplete: 'close',
+                        folders: false
+                    }
+                }
+            }).dialogelfinder('instance');
+        }
+
+                $(document).ready(function() {
+                    $('#txtDetail').summernote({
+                        height: 200,
+                        toolbar: [
+                            ['style', ['bold', 'italic', 'underline', 'clear']],
+                            ['font', ['bold', 'underline', 'clear']],
+                            ['fontsize', ['fontsize']],
+                            ['color', ['color']],
+                            ['insert',['link','picture','video','elfinder']],
+                            ['view',['fullscreen','codeview','help']],
+                            ['para', ['ul', 'ol', 'paragraph']],
+                            ['height', ['height']]
+                        ]
+                    });
+                });
+
+    </script>
+
+
+
+
+
+}
+
 

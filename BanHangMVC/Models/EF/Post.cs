@@ -16,6 +16,7 @@ namespace BanHangMVC.Models.EF
         [StringLength(500)]
         public string Description { get; set; }
         public string Image { get; set; }
+        [DataType(DataType.MultilineText)]
         public string Detail { get; set; }
         public int CategoryID { get; set; }
         public string? SeoTitle { get; set; }

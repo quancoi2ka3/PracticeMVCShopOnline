@@ -16,6 +16,7 @@ namespace BanHangMVC.Models.EF
         [StringLength(500)]
         public string ProductCode { get; set; }
         public string Description { get; set; }
+        [DataType(DataType.MultilineText)]
         public string Detail { get; set; }
         public string Image { get; set; }
         public decimal Price { get; set; }
