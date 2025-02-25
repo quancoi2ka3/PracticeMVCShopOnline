@@ -2,7 +2,7 @@
 using BanHangMVC.Models.EF;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using X.PagedList.Extensions;
 namespace BanHangMVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -15,9 +15,15 @@ namespace BanHangMVC.Areas.Admin.Controllers
             _db = db;
         }
         // GET: NewsController
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            var items = _db.Posts.OrderByDescending(x => x.ID).ToList();
+            int pageSize = 10;
+            int pageIndex = page ?? 1;
+            if (page == null)
+            {
+                page = 1;
+            }
+            var items = _db.Posts.OrderByDescending(x => x.ID).ToPagedList(pageIndex, pageSize);
             return View(items);
         }
         // GET: NewsController/Details/5

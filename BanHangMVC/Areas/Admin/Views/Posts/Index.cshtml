@@ -1,8 +1,12 @@
-﻿@model IEnumerable<BanHangMVC.Models.EF.Post>
+﻿@model X.PagedList.IPagedList<BanHangMVC.Models.EF.Post>
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Core.Fluent
 @{
     ViewData["Title"] = "Bài Viết";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+
 
 <!-- Content Header (Page header) -->
 @section naviheader {
@@ -92,6 +96,24 @@
                     }
                 </tbody>
             </table>
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+                     new PagedListRenderOptions
+            {
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                LinkToPreviousPageFormat = "<i class='fas fa-angle-left'></i>",
+                LinkToNextPageFormat = "<i class='fas fa-angle-right'></i>",
+                LinkToFirstPageFormat = "<i class='fas fa-angle-double-left'></i>",
+                LinkToLastPageFormat = "<i class='fas fa-angle-double-right'></i>",
+                UlElementClasses = new[] { "pagination", "justify-content-center" },
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+                ActiveLiElementClass = "active",
+            })
+
+
         </div>
 
         <!-- /.card-body -->
