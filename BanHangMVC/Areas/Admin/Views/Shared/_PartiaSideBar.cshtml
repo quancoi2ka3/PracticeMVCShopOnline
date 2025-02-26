@@ -3,10 +3,10 @@
     <!-- Sidebar user (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-            <img src="~/Content/Clients/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+            <img src="~/Content/Clients/dist/img/avatar5.png" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-            <a href="#" class="d-block">Alexander Pierce</a>
+            <a href="#" class="d-block">Admin</a>
         </div>
     </div>
 
@@ -32,7 +32,7 @@
                     <i class="nav-icon fas fa-tachometer-alt"></i>
                     <p>
                         Danh mục
-                        <i class="right fas fa-angle-left"></i>
+                        @* <i class="right fas fa-angle-left"></i> *@
                     </p>
                 </a>
             </li>
@@ -41,7 +41,6 @@
                     <i class="nav-icon fas fa-th"></i>
                     <p>
                         Tin tức
-                        <span class="right badge badge-danger">New</span>
                     </p>
                 </a>
             </li>
@@ -50,19 +49,17 @@
                     <i class="nav-icon fas fa-th"></i>
                     <p>
                         Bài viết
-                        <span class="right badge badge-danger">New</span>
                     </p>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="/admin/news" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>
-                        Quảng cáo
-                        <span class="right badge badge-danger">New</span>
-                    </p>
-                </a>
-            </li>
+            @* <li class="nav-item"> *@
+            @*     <a href="/admin/news" class="nav-link"> *@
+            @*         <i class="nav-icon fas fa-th"></i> *@
+            @*         <p> *@
+            @*             Quảng cáo *@
+            @*         </p> *@
+            @*     </a> *@
+            @* </li> *@
             <li class="nav-item">
                 <a href="/admin" class="nav-link">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -73,13 +70,13 @@
                 </a>
                  <ul class="nav nav-treeview"> 
                     <li class="nav-item">
-                         <a href="~/Content/Clients/index.html" class="nav-link"> 
-                             <i class="far fa-circle nav-icon"></i> 
+                        <a href="/admin/category" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i> 
                              <p>Danh mục</p> 
                          </a> 
                      </li> 
                      <li class="nav-item"> 
-                         <a href="~/Content/Clients/index2.html" class="nav-link"> 
+                         <a href="/admin/products" class="nav-link"> 
                              <i class="far fa-circle nav-icon"></i> 
                              <p>Sản phẩm</p> 
                          </a> 
@@ -92,7 +89,7 @@
                     <i class="nav-icon fas fa-th"></i>
                     <p>
                         Cấu hình hệ thống
-                        <span class="right badge badge-danger">New</span>
+                        @* <span class="right badge badge-danger">New</span> *@
                     </p>
                 </a>
             </li>

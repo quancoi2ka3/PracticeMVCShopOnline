@@ -1,9 +1,9 @@
-﻿@model X.PagedList.IPagedList<BanHangMVC.Models.EF.New>
+﻿@model X.PagedList.IPagedList<BanHangMVC.Models.EF.Products>
 @using X.PagedList;
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Mvc.Core.Fluent
 @{
-    ViewData["Title"] = "Tin tức";
+    ViewData["Title"] = "Danh sách sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -17,7 +17,7 @@
             <a href="/admin/home" class="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/news" class="nav-link">@ViewBag.Title</a>
+            <a href="/admin/products" class="nav-link">@ViewBag.Title</a>
         </li>
     </ul>
 }
@@ -46,14 +46,14 @@
             <h3 class="card-title">Danh sách @ViewBag.Title</h3>
 
             <div class="card-tools">
-                <a href="/admin/news/add" class="btn btn-primary">Thêm mới</a>
+                <a href="/admin/products/add" class="btn btn-primary">Thêm mới</a>
                 <a href="#" class="btn btn-danger" id="btnDeleteAll">Xóa mục đã chọn</a>
             </div>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-6">
-                    @using (Html.BeginForm("index", "News",FormMethod.Get,new{}))
+                    @using (Html.BeginForm("index", "Products", FormMethod.Get, new { }))
                     {
                         <div class="input-group input-group-sm">
                             @Html.TextBox("search", ViewBag.Search as string, new { @class = "form-control", @placeholder = "Nhập nội dung tìm kiếm" })
@@ -70,7 +70,10 @@
                         <th><input type="checkbox" id="SelectAll" /></th>
                         <th>STT</th>
                         <th>Hình ảnh</th>
-                        <th>Tiêu đề</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Danh mục</th>
+                        <th>Số lượng</th>
+                        <th>Giá</th>
                         <th>Ngày tạo</th>
                         <th>Hiển thị</th>
                         <th>Hành động</th>
@@ -79,7 +82,7 @@
                 <tbody>
                     @if (Model != null && Model.Any())
                     {
-                        var i = ((ViewBag.Page - 1)*(ViewBag.PageSize))+1;
+                        var i = ((ViewBag.Page - 1) * (ViewBag.PageSize)) + 1;
                         foreach (var item in Model)
                         {
                             var strCheck = item.IsActive ? "<i class = 'fa fa-check text-success'></i>" : "<i class = 'fas fa-times text-danger'></i>";
@@ -88,12 +91,15 @@
                                 <td>@i</td>
                                 <td><img src="@item.Image" width="50" /></td>
                                 <td>@item.Title</td>
+                                <td>@item.ProductCategory.Title</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.Price</td>
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
-								<td class="text-center">
+                                <td class="text-center">
                                     <a href="" data-id="@item.ID" class="Active">@Html.Raw(strCheck)</a>
                                 </td>
                                 <td>
-                                    <a href="/admin/news/edit/@item.ID" class="btn btn-sm btn-primary">Sửa</a>
+                                    <a href="/admin/products/edit/@item.ID" class="btn btn-sm btn-primary">Sửa</a>
                                     <a href="#" data-id="@item.ID" class="btn btn-sm btn-danger btnDelete">Xóa</a>
                                 </td>
                             </tr>
@@ -141,13 +147,13 @@
             $('body').on('click','#btnDeleteAll', function(e) {
                 e.preventDefault();
                 var str = "";
-				var checkbox = $(this).parents('.card').find('tr td input:checkbox');
+                var checkbox = $(this).parents('.card').find('tr td input:checkbox');
                 var i =0;
                 checkbox.each(function(){
                     if (this.checked) {
                         checkbox.attr('selected','checked');
-						var _id = $(this).val();
-						if(i===0){
+                        var _id = $(this).val();
+                        if(i===0){
                             str += _id;
                         }else{
                             str += "," + _id;
@@ -161,9 +167,9 @@
                     var conf = confirm('Bạn có muốn xóa các mục đã chọn không?');
                     if(conf === true){
                         $.ajax({
-                            url: '/admin/news/deleteAll',
+                            url: '/admin/products/deleteAll',
                             type:'POST',
-							data: { ids: str },
+                            data: { ids: str },
                             success : function(rs){
                                 if(rs.success){
                                     location.reload();
@@ -176,11 +182,11 @@
 
             $('body').on('change','#SelectAll',function(){
                 var checkStatus = this.checked;
-				var checkbox =$(this).parents('.card-body').find('tr td input:checkbox');
-				checkbox.each(function(){
-					this.checked = checkStatus;
-					if (this.checked) {
-                        checkbox.attr('selected','checked');                
+                var checkbox =$(this).parents('.card-body').find('tr td input:checkbox');
+                checkbox.each(function(){
+                    this.checked = checkStatus;
+                    if (this.checked) {
+                        checkbox.attr('selected','checked');
                     }else{
                         checkbox.attr('selected','');
                     }
@@ -191,7 +197,7 @@
                 var conf = confirm('Bạn có chắc chắn muốn xóa bản ghi này không?');
                 if(conf===true){
                     $.ajax({
-                        url: '/admin/news/delete',
+                        url: '/admin/products/delete',
                         data: { id: id },
                         type: 'POST',
                         success: function (res) {
@@ -207,20 +213,20 @@
             $('body').on('click', '.Active', function (e) {
                 e.preventDefault();
                 var btn = $(this);
-				var id = btn.data("id");
-				$.ajax({
-					url: '/admin/news/IsActive',
-					type: 'POST',
-					data: { id: id },
-					success:function (res) {
-						if (res.success) {
-							if (res.isActive) {
+                var id = btn.data("id");
+                $.ajax({
+                    url: '/admin/products/IsActive',
+                    type: 'POST',
+                    data: { id: id },
+                    success:function (res) {
+                        if (res.success) {
+                            if (res.isActive) {
                                 btn.html("<i class='fa fa-check text-success'></i>");
-							} else {
-								btn.html("<i class='fas fa-times text-danger'></i>");
-							}
-						}
-					}
+                            } else {
+                                btn.html("<i class='fas fa-times text-danger'></i>");
+                            }
+                        }
+                    }
                 });
             });
         });
