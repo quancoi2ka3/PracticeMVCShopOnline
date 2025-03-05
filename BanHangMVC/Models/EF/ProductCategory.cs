@@ -17,10 +17,15 @@ namespace BanHangMVC.Models.EF
         [StringLength(150)]
         public string Title { get; set; }
         public string Description { get; set; }
-        public string Icon { get; set; }
-        public string SeoTitle { get; set; }
+        public string? Alias { get; set; }
+        [StringLength(250)]
+        public string? Icon { get; set; }
+        [StringLength(250)]
+        public string? SeoTitle { get; set; }
+        [StringLength(500)]
         public string SeoDescription { get; set; }
-        public string SeoKeyword { get; set; }
+        [StringLength(250)]
+        public string? SeoKeyword { get; set; }
         public ICollection<Products> Products { get; set; }
     }
 }

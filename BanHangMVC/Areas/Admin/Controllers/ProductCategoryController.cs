@@ -7,15 +7,15 @@ using X.PagedList.Extensions;
 namespace BanHangMVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class ProductsController : Controller
+    public class ProductCategoryController : Controller
     {
         private readonly ApplicationDbContext _db;
 
-        public ProductsController(ApplicationDbContext db)
+        public ProductCategoryController(ApplicationDbContext db)
         {
             _db = db;
         }
-        // GET: ProductsController
+        // GET: ProductCategoryController
         public ActionResult Index(string search, int? page)
         {
             int pageSize = 5;
@@ -23,7 +23,7 @@ namespace BanHangMVC.Areas.Admin.Controllers
             search = search?.Trim(); // Loại bỏ khoảng trắng thừa
 
             // Truy vấn dữ liệu từ cơ sở dữ liệu
-            IQueryable<Products> query = _db.Productss.OrderByDescending(x => x.ID);
+            IQueryable<ProductCategory> query = _db.ProductCategories.OrderByDescending(x => x.ID);
 
             // Lọc theo từ khóa tìm kiếm (nếu có)
             if (!string.IsNullOrWhiteSpace(search))
@@ -41,37 +41,39 @@ namespace BanHangMVC.Areas.Admin.Controllers
 
             return View(items);
         }
-        public ActionResult Add()
+
+
+        // GET: ProductCategoryController/Details/5
+        public ActionResult Details(int id)
         {
-            ViewBag.Categories = _db.Categories.ToList();
             return View();
         }
+
+        // GET: ProductCategoryController/Add
+        public ActionResult Add()
+        {
+            return View();
+        }
+
+        // POST: ProductCategoryController/Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add(Products model)
+        public IActionResult Add(ProductCategory model)
         {
             if (ModelState.IsValid)
             {
-                var categoryExists = _db.Categories.Any(c => c.ID == model.ProductCategoryID);
-                if (!categoryExists)
-                {
-                    Console.WriteLine($"❌ CategoryID {model.ProductCategoryID} does not exist.");
-                    ModelState.AddModelError("CategoryID", "Invalid category.");
-                    return View(model);
-                }
-
                 try
                 {
                     model.CreatedDate = DateTime.Now;
                     model.ModifiedDate = DateTime.Now;
                     model.Alias = BanHangMVC.Models.Common.Filter.FilterChar(model.Title);
-                    _db.Productss.Add(model);
+                    _db.ProductCategories.Add(model);
                     int rowsAffected = _db.SaveChanges(); // Lưu dữ liệu vào DB
 
                     if (rowsAffected > 0)
                     {
                         Console.WriteLine("✅ Dữ liệu đã được lưu vào database.");
-                        return RedirectToAction("Index", "Products", new { area = "Admin" });
+                        return RedirectToAction("Index", "ProductCategory", new { area = "Admin" });
                     }
                     else
                     {
@@ -101,30 +103,24 @@ namespace BanHangMVC.Areas.Admin.Controllers
             return View(model);
         }
 
-        // GET: ProductsController/Edit/5
+        // GET: NewsController/Edit/5
         public ActionResult Edit(int id)
         {
-            var item = _db.Productss.Find(id);
+            var item = _db.ProductCategories.Find(id);
             return View(item);
         }
 
-        // POST: NewsController/Edit/5
+        // POST: ProductCategoriesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Products model)
+        public IActionResult Edit(ProductCategory model)
         {
-            var categoryExists = _db.Categories.Any(c => c.ID == model.ProductCategoryID);
-            if (!categoryExists)
-            {
-                Console.WriteLine($"❌ CategoryID {model.ProductCategoryID} không tồn tại.");
-                ModelState.AddModelError("CategoryID", "Danh mục không hợp lệ.");
-                return View(model);
-            }
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _db.Productss.Attach(model);
+                    _db.ProductCategories.Attach(model);
                     model.CreatedDate = DateTime.Now;
                     model.ModifiedDate = DateTime.Now;
                     model.Alias = BanHangMVC.Models.Common.Filter.FilterChar(model.Title);
@@ -181,47 +177,47 @@ namespace BanHangMVC.Areas.Admin.Controllers
 
         public ActionResult Delete(int id)
         {
-            var item = _db.Productss.Find(id);
+            var item = _db.ProductCategories.Find(id);
             if (item != null)
             {
-                var DeleteItem = _db.Productss.Attach(item);
-                _db.Productss.Remove(item);
+                var DeleteItem = _db.ProductCategories.Attach(item);
+                _db.ProductCategories.Remove(item);
                 _db.SaveChanges();
                 return Json(new { success = true, message = "Xóa thành công" });
             }
 
             return Json(new { success = false, message = "Xóa thất bại" });
         }
-        public ActionResult IsActive(int id)
-        {
-            var item = _db.Productss.Find(id);
-            if (item != null)
-            {
-                item.IsActive = !item.IsActive;
-                _db.Entry(item).State = EntityState.Modified;
-                _db.SaveChanges();
-                return Json(new { success = true, IsActive = item.IsActive });
-            }
+        //public ActionResult IsActive(int id)
+        //{
+        //    var item = _db.ProductCategories.Find(id);
+        //    if (item != null)
+        //    {
+        //        item.IsActive = !item.IsActive;
+        //        _db.Entry(item).State = EntityState.Modified;
+        //        _db.SaveChanges();
+        //        return Json(new { success = true, IsActive = item.IsActive });
+        //    }
 
-            return Json(new { success = false });
-        }
-        public ActionResult DeleteAll(string ids)
-        {
-            if (!string.IsNullOrEmpty(ids))
-            {
-                var items = ids.Split(',');
-                if (items != null && items.Any())
-                {
-                    foreach (var item in items)
-                    {
-                        var obj = _db.Productss.Find(Convert.ToInt32(item));
-                        _db.Productss.Remove(obj);
-                        _db.SaveChanges();
-                    }
-                }
-                return Json(new { success = true, message = "Xóa thành công" });
-            }
-            return Json(new { success = false });
-        }
+        //    return Json(new { success = false });
+        //}
+        //public ActionResult DeleteAll(string ids)
+        //{
+        //    if (!string.IsNullOrEmpty(ids))
+        //    {
+        //        var items = ids.Split(',');
+        //        if (items != null && items.Any())
+        //        {
+        //            foreach (var item in items)
+        //            {
+        //                var obj = _db.New.Find(Convert.ToInt32(item));
+        //                _db.New.Remove(obj);
+        //                _db.SaveChanges();
+        //            }
+        //        }
+        //        return Json(new { success = true, message = "Xóa thành công" });
+        //    }
+        //    return Json(new { success = false });
+        //}
     }
 }
