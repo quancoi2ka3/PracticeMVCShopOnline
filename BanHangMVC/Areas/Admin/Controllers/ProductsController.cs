@@ -43,7 +43,7 @@ namespace BanHangMVC.Areas.Admin.Controllers
         }
         public ActionResult Add()
         {
-            ViewBag.Categories = _db.Categories.ToList();
+            ViewBag.ProductCategory = _db.ProductCategories.ToList();
             return View();
         }
         [HttpPost]
@@ -52,11 +52,11 @@ namespace BanHangMVC.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var categoryExists = _db.Categories.Any(c => c.ID == model.ProductCategoryID);
+                var categoryExists = _db.ProductCategories.Any(c => c.ID == model.ProductCategoryID);
                 if (!categoryExists)
                 {
-                    Console.WriteLine($"❌ CategoryID {model.ProductCategoryID} does not exist.");
-                    ModelState.AddModelError("CategoryID", "Invalid category.");
+                    Console.WriteLine($"❌ ProductCategoryID {model.ProductCategoryID} does not exist.");
+                    ModelState.AddModelError("ProductCategoryID", "Invalid category.");
                     return View(model);
                 }
 

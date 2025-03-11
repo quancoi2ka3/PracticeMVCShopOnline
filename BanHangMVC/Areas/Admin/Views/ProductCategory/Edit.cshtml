@@ -1,6 +1,6 @@
-﻿@model BanHangMVC.Models.EF.Products
+﻿@model BanHangMVC.Models.EF.ProductCategory
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Cập nhật danh mục sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -13,10 +13,10 @@
             <a href="/admin/home" class="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/category" class="nav-link">Bài viết</a>
+            <a href="/admin/productcategory" class="nav-link">Tin tức</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">Cập nhật</a>
+            <a href="#" class="nav-link">Thêm mới</a>
         </li>
     </ul>
 }
@@ -25,12 +25,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Thêm mới tin tức</h1>
+                <h1>Cập nhật danh mục sản phẩm</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Bài viết</a></li>
-                    <li class="breadcrumb-item active">Cập nhật</li>
+                    <li class="breadcrumb-item"><a href="#">Danh mục sản phẩm</a></li>
+                    <li class="breadcrumb-item active">Thêm mới</li>
                 </ol>
             </div>
         </div>
@@ -43,83 +43,53 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Thông tin bài viết</h3>
+            <h3 class="card-title">Thông tin sản phẩm</h3>
+
         </div>
         <div class="card-body">
-            @if (Model != null)
-            {
-                <div class="bs-stepper-content">
-                    @using (Html.BeginForm("Edit", "Products", new { area = "Admin" }, FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.ValidationSummary(true)
-                        @Html.HiddenFor(x => x.ID)
-                        @Html.HiddenFor(x => x.ProductCategoryID)
-                        <!-- your steps content here -->
-                        <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
-                            <div class="form-group">
-                                <label for="Title">Tiêu đề</label>
-                                @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Nhập tên danh mục" })
-                                @Html.ValidationMessageFor(x => x.Title, "", new { @class = "text-danger" })
-
-                            </div>
-                            <div class="form-group">
-                                <label for="ProductCategoryID">Product Category</label>
-                                @Html.DropDownListFor(m => m.ProductCategoryID, new SelectList(ViewBag.ProductCategory, "ID", "Title"), "Select Category", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.ProductCategoryID, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="form-group">
-                                <label for="Description">Mô tả</label>
-                                @Html.TextAreaFor(x => x.Description, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
-                            </div>
-                            <div class="form-group">
-                                <label for="Detail">Chi tiết</label>
-                                @Html.TextAreaFor(x => x.Detail, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có", @id = "txtDetail" })
-                            </div>
-                            <div class="form-group">
-                                <label for="Position">Hình ảnh</label>
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        @Html.TextBoxFor(x => x.Image, new { @id = "txtImage", @class = "form-control", @placeholder = "Ảnh" })
-                                    </div>
-                                    <div class="input-group-append">
-                                        <input type="button" value="Tải ảnh" onclick="BrowseServer('txtImage');" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="SeoTitle">Hiển thị</label>
-                                @Html.CheckBoxFor(x => x.IsActive)
-                            </div>
-                            <div class="form-group">
-                                <label for="SeoTitle">Seo Title</label>
-                                @Html.TextAreaFor(x => x.SeoTitle, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
-                            </div>
-                            <div class="form-group">
-                                <label for="SeoDescription">Seo Description</label>
-                                @Html.TextAreaFor(x => x.SeoDescription, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
-                            </div>
-                            <div class="form-group">
-                                <label for="SeoKeyword">Seo Keyword</label>
-                                @Html.TextAreaFor(x => x.SeoKeyword, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
-                            </div>
-                            <div class="form-group">
-                                <label for="CreatedBy">Created By</label>
-                                @Html.TextAreaFor(x => x.CreatedBy, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
-                            </div>
-                            <div class="form-group">
-                                <label for="ModifiedBy">Modified By</label>
-                                @Html.TextAreaFor(x => x.ModifiedBy, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
-                            </div>
-                            <div class="form-group">
-                                <a href="/admin/products" class="btn btn-danger">Quay lại</a>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
+            <div class="bs-stepper-content">
+                @using (Html.BeginForm("Edit", "ProductCategory", new { area = "Admin" }, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <!-- your steps content here -->
+                    <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                        <div class="form-group">
+                            <label for="Title">Tiêu đề</label>
+                            @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Nhập tên danh mục" })
+                            @Html.ValidationMessageFor(x => x.Title, "", new { @class = "text-danger" })
                         </div>
-                    }
-                </div>
-            }
-
+                        <div class="form-group">
+                            <label for="Description">Mô tả</label>
+                            @Html.TextAreaFor(x => x.Description, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
+                        </div>
+                        <div class="form-group">
+                            <label for="SeoTitle">Seo Title</label>
+                            @Html.TextAreaFor(x => x.SeoTitle, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
+                        </div>
+                        <div class="form-group">
+                            <label for="SeoDescription">Seo Description</label>
+                            @Html.TextAreaFor(x => x.SeoDescription, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
+                        </div>
+                        <div class="form-group">
+                            <label for="SeoKeyword">Seo Keyword</label>
+                            @Html.TextAreaFor(x => x.SeoKeyword, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
+                        </div>
+                        <div class="form-group">
+                            <label for="CreatedBy">Created By</label>
+                            @Html.TextAreaFor(x => x.CreatedBy, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
+                        </div>
+                        <div class="form-group">
+                            <label for="ModifiedBy">Modified By</label>
+                            @Html.TextAreaFor(x => x.ModifiedBy, new { @class = "form-control", @placeholder = "Nhập mô tả nếu có" })
+                        </div>
+                        <div class="form-group">
+                            <a href="/admin/productcategory" class="btn btn-danger">Quay lại</a>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
@@ -237,5 +207,3 @@
 
 
 }
-
-

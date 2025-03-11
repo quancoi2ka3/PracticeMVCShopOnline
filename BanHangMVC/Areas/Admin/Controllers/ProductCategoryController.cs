@@ -144,7 +144,7 @@ namespace BanHangMVC.Areas.Admin.Controllers
                     if (rowsAffected > 0)
                     {
                         Console.WriteLine("✅ Dữ liệu đã được lưu vào database.");
-                        return RedirectToAction("Index", "News", new { area = "Admin" });
+                        return RedirectToAction("Index", "Productcategory", new { area = "Admin" });
                     }
                     else
                     {
