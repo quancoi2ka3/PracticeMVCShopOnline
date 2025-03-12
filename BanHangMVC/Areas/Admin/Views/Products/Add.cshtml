@@ -124,21 +124,27 @@
 									<div class="col-4">
                                         <div class="form-group">
                                             <label for="Title">Số lượng</label>
-                                            @Html.TextBoxFor(x => x.Quantity, new { @class = "form-control", @placeholder = "Số lượng sản phẩm" })
+                                            @Html.TextBoxFor(x => x.Quantity, new { @class = "form-control", @placeholder = "1" })
                                             @Html.ValidationMessageFor(x => x.Quantity, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     <div class="col-4">
                                         <div class="form-group">
-                                            <label for="Title">Giá</label>
-                                            @Html.TextBoxFor(x => x.Price, new { @class = "form-control", @placeholder = "Giá sản phẩm" })
+                                            <label for="PriceDisplay">Giá</label>
+                                            <!-- Input hiển thị: không có name để tránh gửi lên server -->
+                                            <input type="text" id="PriceDisplay" value="0" class="form-control auto" />
+                                            <!-- Input hidden: chứa giá trị raw, có name="Price" để bind vào model -->
+                                            @Html.HiddenFor(x => x.Price, new { id = "Price" })
                                             @Html.ValidationMessageFor(x => x.Price, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     <div class="col-4">
                                         <div class="form-group">
-                                            <label for="Title">Giá khuyến mại</label>
-                                            @Html.TextBoxFor(x => x.PriceSale, new { @class = "form-control", @placeholder = "Giá khuyến mại sản phẩm" })
+                                            <label for="PriceSaleDisplay">Giá khuyến mại</label>
+                                            <!-- Input hiển thị: không có name để tránh gửi lên server -->
+                                            <input type="text" id="PriceSaleDisplay" value="0" class="form-control auto" />
+                                            <!-- Input hidden: chứa giá trị raw, có name="Price" để bind vào model -->
+                                            @Html.HiddenFor(x => x.PriceSale, new { id = "PriceSale" })
                                             @Html.ValidationMessageFor(x => x.PriceSale, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -239,7 +245,54 @@
 </section>
 <!-- /.content -->
 @section scripts {
+    
 <script>
+                $(document).ready(function () {
+            // Khởi tạo AutoNumeric cho input hiển thị
+            var anPrice = new AutoNumeric('#PriceDisplay', {
+                currencySymbol: 'đ',              // Ký hiệu tiền tệ
+                currencySymbolPlacement: 's',     // Đặt sau số (suffix)
+                decimalPlaces: 2,                 // Hiển thị 2 chữ số thập phân
+                digitGroupSeparator: '.',         // Dấu phân cách hàng nghìn
+                decimalCharacter: ',',            // Dấu thập phân
+                unformatOnSubmit: false           // Không tự động unformat khi submit (chúng ta sẽ tự cập nhật)
+            });
+
+            var initialValue = $('#Price').val();
+            if (initialValue !== '') {
+                anPrice.set(initialValue);
+            }
+
+            $('#PriceDisplay').on('keyup change blur', function () {
+                var rawValue = anPrice.getNumber();  // Lấy giá trị raw không có định dạng
+                $('#Price').val(rawValue);           // Cập nhật vào input hidden
+            });
+
+            //PriceSale
+            var anPrice = new AutoNumeric('#PriceSaleDisplay', {
+                currencySymbol: 'đ',              // Ký hiệu tiền tệ
+                currencySymbolPlacement: 's',     // Đặt sau số (suffix)
+                decimalPlaces: 2,                 // Hiển thị 2 chữ số thập phân
+                digitGroupSeparator: '.',         // Dấu phân cách hàng nghìn
+                decimalCharacter: ',',            // Dấu thập phân
+                unformatOnSubmit: false           // Không tự động unformat khi submit (chúng ta sẽ tự cập nhật)
+            });
+
+            // Nếu có giá trị ban đầu từ input hidden, cập nhật lại định dạng cho PriceDisplay
+            var initialValue = $('#PriceSale').val();
+            if (initialValue !== '') {
+                anPrice.set(initialValue);
+            }
+
+            $('#PriceDisplay').on('keyup change blur', function () {
+                var rawValue = anPrice.getNumber();  // Lấy giá trị raw không có định dạng
+                $('#PriceSale').val(rawValue);           // Cập nhật vào input hidden
+            });
+        });
+        // Initialization
+        
+        
+        
 				(function (factory) {
 					if (typeof define === 'function' && define.amd) {
 						define(['jquery'], factory);
@@ -371,6 +424,6 @@
                 $('#tCurrentID').val(currentId);
             }
         });
-
+           
 </script>
 }

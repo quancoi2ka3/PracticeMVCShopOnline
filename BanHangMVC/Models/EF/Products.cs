@@ -19,7 +19,15 @@ namespace BanHangMVC.Models.EF
         [DataType(DataType.MultilineText)]
         public string Detail { get; set; }
         public string Image { get; set; }
+        [Display(Name = "Giá")]
+        [Required(ErrorMessage = "Vui lòng nhập giá")]
+        [Range(0, double.MaxValue, ErrorMessage = "Giá không hợp lệ")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Sai định dạng số")]
         public decimal Price { get; set; }
+        [Display(Name = "Giá khuyến mại")]
+        [Required(ErrorMessage = "Vui lòng nhập giá khuyến mại")]
+        [Range(0, double.MaxValue, ErrorMessage = "Giá khuyến mại không hợp lệ")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Sai định dạng số")]
         public decimal PriceSale { get; set; }
         public int Quantity { get; set; }
         public bool IsHome { get; set; }
