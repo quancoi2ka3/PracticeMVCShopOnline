@@ -174,7 +174,9 @@
                             <div class="tab-pane" id="timeline">
                                 <!-- The timeline -->
 								<div class="row">
-                                    <input type="button" class="btn btn-primary" id="ITaiAnh" value="Tải ảnh" onclick="BrowseServer('txtImage');" />
+									<div class="col-md-12 text-right">
+                                        <input type="button" class="btn btn-primary" id="ITaiAnh" value="Tải ảnh" onclick="BrowseServer('txtImage');" />
+                                    </div>
 									<div class="col-md-12">
 										<table class="table table-hover" id="tbAnhSanPham">
                                             <thead>
@@ -186,20 +188,11 @@
 
                                                 </tr>
                                             </thead>
-											<tbody>
-												<tr>
-                                                    <td class="text-center">1</td>
-                                                    <td class="text-center">
-                                                        <div class="custom-file">
-                                                            @Html.TextBoxFor(x => x.Image, new { @id = "txtImage", @class = "form-control", @placeholder = "Ảnh" })
-                                                        </div>
-                                                        <img id="imgPreview" src="" class="img-thumbnail mt-2" alt="Ảnh xem trước" style="max-width: 150px;" />
-                                                    </td>
-													<td class="text-center"><input type="radio" name="rDefault" /></td>
-                                                    <td class="text-center"><a href="#" class="btn btn-danger">Xóa</a></td>
-                                                </tr>
+                                            <tbody id="tbAnhSanPham">
+												
                                             </tbody>
                                         </table>
+										<input type="hidden" id="tCurrentID" value="0" />
                                     </div>
                                 </div>
                             </div>
@@ -310,13 +303,13 @@
 				function BrowseServer(inputId) {
 			$('<div/>').dialogelfinder({
 				url: "/el-finder-file-system/connector", // Đường dẫn tới server xử lý file
-				baseUrl: "@Url.Content("~/lib/elfinder")",
+				baseUrl: "@Url.Content("~/lib/elfinder/")",
 				lang: 'vi',
 				width: 840,
 				height: 450,
 				destroyOnClose: true,
 				getFileCallback: function (file, fm) {
-					$('#' + inputId).val(file.url); // Gán đường dẫn ảnh vào ô nhập liệu
+                    addImageProduct(file.url); // Gán đường dẫn ảnh vào ô nhập liệu
 				},
 				commandsOptions: {
 					getfile: {
@@ -342,19 +335,38 @@
 						]
 					});
 				});
-                     $(document).ready(function () {
-            // Update image preview when the text input changes
-            $("#txtImage").on("input", function () {
-                var imageUrl = $(this).val();
-                $("#imgPreview").attr("src", imageUrl);
-            });
-
-            // Initialize on page load (in case there's an initial value)
-            var initialImageUrl = $("#txtImage").val();
-            if (initialImageUrl) {
-                $("#imgPreview").attr("src", initialImageUrl);
+        function addImageProduct(url){
+			var temp = $('#tCurrentID').val();
+            var currentId = parseInt(temp) + 1;
+            var str ="";
+            if(currentId == 1){
+                str += `<tr class="text-center id="tRow_${currentId}">
+                    <td class="text-center">${currentId}</td>
+                    <td class="text-center">
+                        <img width="80" src="${url}" alt="" />
+                    </td>
+                    <td class="text-center"><input type="radio" value="${currentId}" name="rDefault" checked="checked"/></td>
+                    <td class="text-center"><a href="#" data-id="${currentId}" class="btn btn-danger btnXoaAnh">Xóa</a></td>
+                </tr>`;
+            
+            }else{
+                str += `<tr class="text-center id="tRow_${currentId}>
+					<td class="text-center">${currentId}</td>
+					<td class="text-center">
+						<img width="80" src="${url}" alt="" />
+					</td>
+                    <td class="text-center"><input type="radio" value="${currentId}"  name="rDefault" /></td>
+                    <td class="text-center"><a href="#" data-id="${currentId}" class="btn btn-danger btnXoaAnh">Xóa</a></td>
+				</tr>`;
             }
-        });
-        
+            $('#tbAnhSanPham').append(str);
+            $('#tCurrentID').val(currentId);
+			$('#tbAnhSanPham tr td a').each(function(){
+				$(this).click(function(){
+					var id = $(this).data('id');
+					$('#tRow_'+id).remove();
+				});
+			});
+        }
 </script>
-}
+}}
