@@ -6,6 +6,11 @@ namespace BanHangMVC.Models.EF
     [Table("tb_Products")]
     public class Products : CommonAbstract
     {
+        public Products()
+        {
+            this.ProductImage = new HashSet<ProductImage>();
+            this.OrderDetail = new HashSet<OrderDetail>();
+        }
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
@@ -23,11 +28,13 @@ namespace BanHangMVC.Models.EF
         [Required(ErrorMessage = "Vui lòng nhập giá")]
         [Range(0, double.MaxValue, ErrorMessage = "Giá không hợp lệ")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Sai định dạng số")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
         [Display(Name = "Giá khuyến mại")]
         [Required(ErrorMessage = "Vui lòng nhập giá khuyến mại")]
         [Range(0, double.MaxValue, ErrorMessage = "Giá khuyến mại không hợp lệ")]
         [RegularExpression(@"^\d+$", ErrorMessage = "Sai định dạng số")]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal PriceSale { get; set; }
         public int Quantity { get; set; }
         public bool IsHome { get; set; }
@@ -40,5 +47,7 @@ namespace BanHangMVC.Models.EF
         public string SeoKeyword { get; set; }
         public bool IsActive { get; set; }
         public virtual ProductCategory ProductCategory { get; set; }
+        public virtual ICollection<ProductImage> ProductImage { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetail { get; set; }
     }
 }

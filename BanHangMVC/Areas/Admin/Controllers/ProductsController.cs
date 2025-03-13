@@ -48,7 +48,7 @@ namespace BanHangMVC.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add(Products model)
+        public IActionResult Add(Products model, List<string> Images, List<int> rDefault)
         {
             if (ModelState.IsValid)
             {
@@ -59,46 +59,59 @@ namespace BanHangMVC.Areas.Admin.Controllers
                     ModelState.AddModelError("ProductCategoryID", "Invalid category.");
                     return View(model);
                 }
-
-                try
+                if (model.ProductImage == null)
                 {
-                    model.CreatedDate = DateTime.Now;
-                    model.ModifiedDate = DateTime.Now;
+                    model.ProductImage = new List<ProductImage>();
+                }
+                if (Images != null && Images.Count > 0)
+                {
+                    for (int i = 0; i < Images.Count; i++)
+                    {
+                        if (i + 1 == rDefault[0])
+                        {
+                            model.ProductImage.Add(new ProductImage
+                            {
+                                ProductID = model.ID,
+                                Image = Images[i],
+                                IsDefault = true
+                            });
+                        }
+                        else
+                        {
+                            model.ProductImage.Add(new ProductImage
+                            {
+                                ProductID = model.ID,
+                                Image = Images[i],
+                                IsDefault = false
+                            });
+                        }
+                    }
+                }
+                model.CreatedDate = DateTime.Now;
+                model.ModifiedDate = DateTime.Now;
+                if (string.IsNullOrEmpty(model.Alias))
+                {
                     model.Alias = BanHangMVC.Models.Common.Filter.FilterChar(model.Title);
-                    _db.Productss.Add(model);
-                    int rowsAffected = _db.SaveChanges(); // Lưu dữ liệu vào DB
+                }
+                if (string.IsNullOrEmpty(model.SeoTitle))
+                {
+                    model.SeoTitle = model.Title;
+                }
+                if (string.IsNullOrEmpty(model.SeoDescription))
+                {
+                    model.SeoDescription = model.Description;
+                }
+                if (string.IsNullOrEmpty(model.SeoKeyword))
+                {
+                    model.SeoKeyword = model.Title;
+                }
+                _db.Productss.Add(model);
+                _db.SaveChanges();
+                return RedirectToAction("Index", "Products", new { area = "Admin" });
 
-                    if (rowsAffected > 0)
-                    {
-                        Console.WriteLine("✅ Dữ liệu đã được lưu vào database.");
-                        return RedirectToAction("Index", "Products", new { area = "Admin" });
-                    }
-                    else
-                    {
-                        Console.WriteLine("⚠️ Không có dữ liệu nào được thêm vào.");
-                    }
-                }
-                catch (DbUpdateException dbEx) // Lỗi từ database
-                {
-                    Console.WriteLine($"🛑 Lỗi database: {dbEx.InnerException?.Message ?? dbEx.Message}");
-                    ModelState.AddModelError("", "Lỗi database xảy ra.");
-                }
-                catch (Exception ex) // Lỗi chung
-                {
-                    Console.WriteLine($"🚨 Lỗi khi lưu dữ liệu: {ex.Message}");
-                    ModelState.AddModelError("", "Lỗi không xác định khi lưu dữ liệu.");
-                }
             }
-            else
-            {
-                Console.WriteLine("⚠️ Model không hợp lệ.");
-                foreach (var modelError in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    Console.WriteLine($"❌ Validation Error: {modelError.ErrorMessage}");
-                }
-            }
-
             return View(model);
+
         }
 
         // GET: ProductsController/Edit/5

@@ -12,6 +12,7 @@ namespace BanHangMVC.Models.EF
         public int ProductID { get; set; }
         public string Image { get; set; }
         public bool IsDefault { get; set; }
+        public virtual Products Products { get; set; }
 
     }
 }

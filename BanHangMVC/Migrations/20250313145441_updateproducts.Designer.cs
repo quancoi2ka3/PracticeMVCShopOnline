@@ -4,6 +4,7 @@ using BanHangMVC.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BanHangMVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250313145441_updateproducts")]
+    partial class updateproducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -520,12 +523,7 @@ namespace BanHangMVC.Migrations
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductsID")
-                        .HasColumnType("int");
-
                     b.HasKey("ID");
-
-                    b.HasIndex("ProductsID");
 
                     b.ToTable("tb_ProductImage");
                 });
@@ -836,7 +834,7 @@ namespace BanHangMVC.Migrations
                         .IsRequired();
 
                     b.HasOne("BanHangMVC.Models.EF.Products", "Product")
-                        .WithMany("OrderDetail")
+                        .WithMany()
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -855,17 +853,6 @@ namespace BanHangMVC.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("BanHangMVC.Models.EF.ProductImage", b =>
-                {
-                    b.HasOne("BanHangMVC.Models.EF.Products", "Products")
-                        .WithMany("ProductImage")
-                        .HasForeignKey("ProductsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("BanHangMVC.Models.EF.Products", b =>
@@ -945,13 +932,6 @@ namespace BanHangMVC.Migrations
             modelBuilder.Entity("BanHangMVC.Models.EF.ProductCategory", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("BanHangMVC.Models.EF.Products", b =>
-                {
-                    b.Navigation("OrderDetail");
-
-                    b.Navigation("ProductImage");
                 });
 #pragma warning restore 612, 618
         }

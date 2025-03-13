@@ -52,32 +52,6 @@
                 {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true)
-                    <!-- your steps content here -->
-                    @*<div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
-                       
-                         <div class="form-group"> 
-                             <label for="CategoryID">Category</label> 
-                             @Html.DropDownListFor(m => m.ProductCategoryID, new SelectList(ViewBag.Categories, "ID", "Title"), "Select Category", new { @class = "form-control" }) 
-                             @Html.ValidationMessageFor(m => m.ProductCategoryID, "", new { @class = "text-danger" }) 
-                         </div> 
-                         
-                         <div class="form-group"> 
-                             <label for="Position">Hình ảnh</label> 
-                             <div class="input-group"> 
-                                 <div class="custom-file"> 
-                                     @Html.TextBoxFor(x => x.Image, new { @id = "txtImage", @class = "form-control", @placeholder = "Ảnh" }) 
-                                 </div> 
-                                 <div class="input-group-append"> 
-                                     <input type="button" value="Tải ảnh" onclick="BrowseServer('txtImage');" /> 
-                                 </div> 
-                             </div> 
-                         </div> 
-                        
-                         <div class="form-group"> 
-                             <a href="/admin/news" class="btn btn-danger">Quay lại</a> 
-                             <button type="submit" class="btn btn-primary">Submit</button> 
-                         </div> 
-                    </div>*@
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
                             <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
@@ -85,7 +59,6 @@
                             <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">SEO</a></li>
                         </ul>
                     </div>
-
                     <!-- /.card-header -->
                     <div class="card-body p-0">
                         <div class="tab-content">
@@ -228,20 +201,15 @@
                             </div>
                             <!-- /.tab-pane -->
                         </div>
-                        <!-- /.tab-content -->
+                        <div class="row " style="justify-content: space-evenly">
+                            <a href="/admin/products" class="btn btn-danger">Quay lại</a>
+                            <button type="submit" class="btn btn-primary">Submit</button> 
+                        </div>
                     </div>
-
-                    <!-- /.card-body -->
                 }
             </div>
         </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-        </div>
-        <!-- /.card-footer-->
     </div>
-    <!-- /.card -->
-
 </section>
 <!-- /.content -->
 @section scripts {
@@ -388,24 +356,33 @@
 						]
 					});
 				});
-                function addImageProduct(url) {
+                        function addImageProduct(url) {
             var temp = $('#tCurrentID').val();
             var currentId = parseInt(temp) + 1;
-
-            // Fix the string template quotes
-            var str = `<tr class="text-center" id="tRow_${currentId}">
-                <td class="text-center">${currentId}</td>
-                <td class="text-center">
-                    <img width="80" src="${url}" alt="" />
-                </td>
-                <td class="text-center">
-                    <input type="radio" value="${currentId}" name="rDefault" ${currentId === 1 ? 'checked="checked"' : ''} />
-                </td>
-                <td class="text-center">
-                    <a href="#" data-id="${currentId}" class="btn btn-danger btnXoaAnh">Xóa</a>
-                </td>
-            </tr>`;
-
+            var str = "";
+            if (currentId == 1) {
+                str += `<tr class="text-center" id="tRow_${currentId}">
+                    <td class="text-center">${currentId}</td>
+                    <td class="text-center">
+                        <img width="80" src="${url}" alt="" /><input type="hidden" value="${url}" name="Images" />
+                    </td>
+                    <td class="text-center"><input type="radio" name="rDefault" value="${currentId}" checked="checked"/></td>
+                    <td class="text-center">
+                        <a href="#" data-id="${currentId}" class="btn btn-danger btnXoaAnh">Xóa</a>
+                    </td>
+                </tr>`;
+            } else {
+                str += `<tr class="text-center" id="tRow_${currentId}">
+                    <td class="text-center">${currentId}</td>
+                    <td class="text-center">
+                        <img width="80" src="${url}" alt="" /><input type="hidden" value="${url}" name="Images" />
+                    </td>
+                    <td class="text-center"><input type="radio" name="rDefault" value="${currentId}"/></td>
+                    <td class="text-center">
+                        <a href="#" data-id="${currentId}" class="btn btn-danger btnXoaAnh">Xóa</a>
+                    </td>
+                </tr>`;
+            }
             $('#tbAnhSanPham').append(str);
             $('#tCurrentID').val(currentId);
         }

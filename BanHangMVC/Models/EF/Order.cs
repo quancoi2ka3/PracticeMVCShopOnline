@@ -21,6 +21,7 @@ namespace BanHangMVC.Models.EF
         public string Phone { get; set; }
         [Required]
         public string Address { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
         public decimal TotalAmount { get; set; }
         public int Quantity { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
